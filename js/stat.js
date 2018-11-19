@@ -32,7 +32,7 @@ var renderCloud = function (ctx, x, y, color) {
   ctx.closePath();
 };
 
-var congratulation = function (ctx) {
+var writeCongratulation = function (ctx) {
   ctx.fillText('Ура, Вы победили!', CLOUD_X + 2 * GAP, CLOUD_Y + FONT_HEIGHT + GAP);
   ctx.fillText('Список результатов:', CLOUD_X + 2 * GAP, CLOUD_Y + 2 * FONT_HEIGHT + GAP);
 };
@@ -43,7 +43,7 @@ var getMaxElement = function (arr) {
   });
 };
 
-var histogram = function (ctx, names, times) {
+var makeHistogram = function (ctx, names, times) {
 
   var maxTime = Math.round(getMaxElement(times));
 
@@ -69,7 +69,7 @@ window.renderStatistics = function (ctx, names, times) {
   ctx.fillStyle = '#000';
   ctx.font = FONT_PARAMETER;
 
-  congratulation(ctx);
+  writeCongratulation(ctx);
 
-  histogram(ctx, names, times);
+  makeHistogram(ctx, names, times);
 };
