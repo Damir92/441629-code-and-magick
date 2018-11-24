@@ -7,49 +7,39 @@ var COAT_COLORS = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161
 var EYES_COLORS = ['black', 'red', 'blue', 'yellow', 'green'];
 
 var userDialog = document.querySelector('.setup');
-userDialog.classList.remove('hidden');
-
 var similarListElement = userDialog.querySelector('.setup-similar-list');
-
 var similarWizardTemplate = document.querySelector('#similar-wizard-template')
     .content.querySelector('.setup-similar-item');
 
-var getRandom = function (arr) {
-  return Math.floor(Math.random() * arr.length);
+// Функция, отображающая скрытые блоки
+var showHiddenBlocks = function (block) {
+  block.classList.remove('hidden');
+  block.querySelector('.setup-similar').classList.remove('hidden');
 };
 
+// Функция, возвращающая случайный элемент массива
+var getRandomElement = function (arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+};
+
+// Функция, создающая массив объектов со свойствами волшебников
 var makeWizards = function (numWizards) {
   var wizards = [];
-  var indexName;
-  var indexLastName;
-  var indexCoat;
-  var indexEye;
-  var tempNames = WIZARD_NAMES.slice();
-  var tempLastNames = WIZARD_LAST_NAMES.slice();
-  var tempCoatColors = COAT_COLORS.slice();
-  var tempEyesColors = EYES_COLORS.slice();
 
-  for (i = 0; i < numWizards; i++) {
-    indexName = getRandom(tempNames);
-    indexLastName = getRandom(tempLastNames);
-    indexCoat = getRandom(tempCoatColors);
-    indexEye = getRandom(tempEyesColors);
+  for (var i = 0; i < numWizards; i++) {
 
     wizards[i] = {
-      name: tempNames[indexName] + ' ' + tempLastNames[indexLastName],
-      coatColor: tempCoatColors[indexCoat],
-      eyesColor: tempEyesColors[indexEye]
+      name: getRandomElement(WIZARD_NAMES) + ' ' + getRandomElement(WIZARD_LAST_NAMES),
+      coatColor: getRandomElement(COAT_COLORS),
+      eyesColor: getRandomElement(EYES_COLORS)
     };
 
-    tempNames.splice(indexName, 1);
-    tempLastNames.splice(indexLastName, 1);
-    tempCoatColors.splice(indexCoat, 1);
-    tempEyesColors.splice(indexEye, 1);
   }
 
   return wizards;
 };
 
+// функция, наполняющая DOM-элемент по шаблону
 var renderWizard = function (wizard) {
   var wizardElement = similarWizardTemplate.cloneNode(true);
 
@@ -60,14 +50,19 @@ var renderWizard = function (wizard) {
   return wizardElement;
 };
 
-var wizards = makeWizards(NUM_WIZARDS);
+// функция, создающая DOM-элемент во фрагменте
+var makeWizardsBlock = function (wizardsArr) {
+  wizardsArr.forEach(function (elem) {
+    fragment.appendChild(renderWizard(elem));
+  });
+};
 
+// Блок выполнения
+var wizards = makeWizards(NUM_WIZARDS);
 var fragment = document.createDocumentFragment();
 
-for (var i = 0; i < NUM_WIZARDS; i++) {
-  fragment.appendChild(renderWizard(wizards[i]));
-}
+makeWizardsBlock(wizards);
 
 similarListElement.appendChild(fragment);
 
-userDialog.querySelector('.setup-similar').classList.remove('hidden');
+showHiddenBlocks(userDialog);
