@@ -52,17 +52,17 @@ var renderWizard = function (wizard) {
 
 // функция, создающая DOM-элемент во фрагменте
 var makeWizardsBlock = function (wizardsArr) {
+  var fragment = document.createDocumentFragment();
+
   wizardsArr.forEach(function (elem) {
     fragment.appendChild(renderWizard(elem));
   });
+  similarListElement.appendChild(fragment);
 };
 
 // Блок выполнения
 var wizards = makeWizards(NUM_WIZARDS);
-var fragment = document.createDocumentFragment();
 
 makeWizardsBlock(wizards);
-
-similarListElement.appendChild(fragment);
 
 showHiddenBlocks(userDialog);
