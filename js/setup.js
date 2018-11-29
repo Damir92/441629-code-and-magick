@@ -21,12 +21,35 @@ var similarWizardTemplate = document.querySelector('#similar-wizard-template')
 // Функция открытия окна настроек персонажа
 var openSetup = function () {
   userDialog.classList.remove('hidden');
+
+  setupOpen.removeEventListener('click', openSetup);
+  setupOpen.removeEventListener('keydown', onIconEnterPress);
+
+  setupClose.addEventListener('click', closeSetup);
+
   document.addEventListener('keydown', onSetupEscPress);
+  setupClose.addEventListener('keydown', onXButtonEnterPress);
+
+  setupUserName.addEventListener('focusin', onInputFocus);
+  setupUserName.addEventListener('blur', onInputFocusOut);
+
+  changeWizardStyle(setupPlayer);
 };
 
 // Функция закрытия окна настроек персонажа
 var closeSetup = function () {
   userDialog.classList.add('hidden');
+
+  setupOpen.addEventListener('click', openSetup);
+  setupOpen.addEventListener('keydown', onIconEnterPress);
+
+  setupClose.removeEventListener('click', closeSetup);
+
+  document.removeEventListener('keydown', onSetupEscPress);
+  setupClose.removeEventListener('keydown', onXButtonEnterPress);
+
+  setupUserName.removeEventListener('focusin', onInputFocus);
+  setupUserName.removeEventListener('blur', onInputFocusOut);
 };
 
 // Функция закрытия окна при нажатии ESC
@@ -36,7 +59,60 @@ var onSetupEscPress = function (evt) {
   }
 };
 
-var onWizardClick = function (wizard) {
+// Функция открытия окна при нажатии ENTER на иконке
+var onIconEnterPress = function (evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    openSetup();
+  }
+};
+
+// Функция закрытия окна при нажатии ENTER на Х
+var onXButtonEnterPress = function (evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    closeSetup();
+  }
+};
+
+// Снятие возможности закрытия окна нажатием ESC
+// при фокусе в форме ввода имени
+var onInputFocus = function () {
+  document.removeEventListener('keydown', onSetupEscPress);
+
+  setupUserName.addEventListener('invalid', showValidityMessage);
+  setupUserName.addEventListener('input', changeValidityMessage);
+};
+
+// Возврат возможности закрытия окна нажатием ESC
+// после потери фокуса полем ввода имени
+var onInputFocusOut = function () {
+  document.addEventListener('keydown', onSetupEscPress);
+
+  setupUserName.removeEventListener('invalid', showValidityMessage);
+  setupUserName.removeEventListener('input', changeValidityMessage);
+};
+
+var showValidityMessage = function () {
+  if (setupUserName.validity.tooShort) {
+    setupUserName.setCustomValidity('Имя должно состоять минимум из 2-х символов');
+  } else if (setupUserName.validity.tooLong) {
+    setupUserName.setCustomValidity('Имя не должно превышать 25-ти символов');
+  } else if (setupUserName.validity.valueMissing) {
+    setupUserName.setCustomValidity('Обязательное поле');
+  } else {
+    setupUserName.setCustomValidity('');
+  }
+};
+
+var changeValidityMessage = function (evt) {
+  var target = evt.target;
+  if (target.value.length < 2) {
+    target.setCustomValidity('Имя должно состоять минимум из 2-х символов');
+  } else {
+    target.setCustomValidity('');
+  }
+};
+
+var changeWizardStyle = function (wizard) {
   var wizardCoat = wizard.querySelector('.wizard-coat');
   var wizardEyes = wizard.querySelector('.wizard-eyes');
   var wizardFireball = wizard.querySelector('.setup-fireball-wrap');
@@ -124,60 +200,7 @@ makeWizardsBlock(wizards);
 // showHiddenBlocks(userDialog);
 
 // Открывает окно настроек при клике по иконке
-setupOpen.addEventListener('click', function () {
-  openSetup();
-});
+setupOpen.addEventListener('click', openSetup);
 
 // Открывает окно настроек при нажатии ENTER на иконке
-setupOpen.addEventListener('keydown', function (evt) {
-  if (evt.keyCode === ENTER_KEYCODE) {
-    openSetup();
-  }
-});
-
-// Закрывает окно настроек при клике по кнопке Х
-setupClose.addEventListener('click', function () {
-  closeSetup();
-});
-
-// Закрывает окно настроек при нажатии ENTER на кнопке Х
-setupClose.addEventListener('keydown', function (evt) {
-  if (evt.keyCode === ENTER_KEYCODE) {
-    closeSetup();
-  }
-});
-
-// Снятие возможности закрытия окна нажатием ESC
-// при фокусе в форме ввода имени
-setupUserName.addEventListener('focusin', function () {
-  document.removeEventListener('keydown', onSetupEscPress);
-});
-
-// Возврат возможности закрытия окна нажатием ESC
-// после потери фокуса полем ввода имени
-setupUserName.addEventListener('blur', function () {
-  document.addEventListener('keydown', onSetupEscPress);
-});
-
-setupUserName.addEventListener('invalid', function () {
-  if (setupUserName.validity.tooShort) {
-    setupUserName.setCustomValidity('Имя должно состоять минимум из 2-х символов');
-  } else if (setupUserName.validity.tooLong) {
-    setupUserName.setCustomValidity('Имя не должно превышать 25-ти символов');
-  } else if (setupUserName.validity.valueMissing) {
-    setupUserName.setCustomValidity('Обязательное поле');
-  } else {
-    setupUserName.setCustomValidity('');
-  }
-});
-
-setupUserName.addEventListener('input', function (evt) {
-  var target = evt.target;
-  if (target.value.length < 2) {
-    target.setCustomValidity('Имя должно состоять минимум из 2-х символов');
-  } else {
-    target.setCustomValidity('');
-  }
-});
-
-onWizardClick(setupPlayer);
+setupOpen.addEventListener('keydown', onIconEnterPress);
