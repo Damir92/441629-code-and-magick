@@ -89,14 +89,16 @@
     setupUserName.removeEventListener('input', changeValidityMessage);
   };
 
-  window.popup = {
-    userDialog: userDialog,
-    setupUserName: setupUserName
-  };
-
   // Открывает окно настроек при клике по иконке
   setupOpen.addEventListener('click', openSetup);
 
   // Открывает окно настроек при нажатии ENTER на иконке
   setupOpen.addEventListener('keydown', onIconEnterPress);
+
+  window.popup = {
+    userDialog: userDialog,
+    setupUserName: setupUserName,
+    closeSetup: closeSetup
+  };
+
 })();
