@@ -30,7 +30,7 @@
       onError('Ошибка! Запрос не успел выполниться за ' + xhr.timeout + 'мс');
     });
 
-    xhr.timeout = 10;
+    xhr.timeout = 10000;
 
     xhr.open('POST', URL);
     xhr.send(data);
@@ -56,7 +56,7 @@
       onError('Ошибка! Запрос не успел выполниться за ' + xhr.timeout + 'мс');
     });
 
-    xhr.timeout = 100;
+    xhr.timeout = 10000;
 
     xhr.open('GET', URLDATA);
     xhr.send();
@@ -70,10 +70,16 @@
       var setupFooter = document.querySelector('.setup-footer');
       var errorMessage = document.createElement('p');
 
+      errorMessage.classList.add('setup-footer-error');
       errorMessage.style.backgroundColor = 'red';
       errorMessage.textContent = errorText;
+      errorMessage.style.textAlign = 'center';
 
-      setupFooter.appendChild(errorMessage);
+      if (document.querySelector('.setup-footer-error')) {
+        setupFooter.replaceChild(errorMessage, document.querySelector('.setup-footer-error'));
+      } else {
+        setupFooter.appendChild(errorMessage);
+      }
     });
     evt.preventDefault();
   });
