@@ -5,9 +5,6 @@
   var URLDATA = 'https://js.dump.academy/code-and-magick/data';
 
   var userDialog = window.setup.userDialog;
-  var similarListElement = window.wizards.similarListElement;
-  var renderWizard = window.wizards.renderWizard;
-  var getRandomElement = window.setup.getRandomElement;
   var closeSetup = window.popup.closeSetup;
 
   var save = function (data, onLoad, onError) {
@@ -36,7 +33,7 @@
     xhr.send(data);
   };
 
-  var load = function (onLoad, onError) {
+  window.load = function (onLoad, onError) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
 
@@ -82,27 +79,6 @@
       }
     });
     evt.preventDefault();
-  });
-
-  load(function (wizards) {
-    var fragment = document.createDocumentFragment();
-
-    for (var i = 0; i < 4; i++) {
-      fragment.appendChild(renderWizard(getRandomElement(wizards)));
-    }
-    similarListElement.appendChild(fragment);
-
-    userDialog.querySelector('.setup-similar').classList.remove('hidden');
-  }, function (errorText) {
-    var header = document.querySelector('header');
-    var headerDescription = document.querySelector('.header-description');
-    var errorMessage = document.createElement('p');
-
-    errorMessage.classList.add('header-desciption');
-    errorMessage.style.backgroundColor = 'red';
-    errorMessage.textContent = errorText;
-
-    header.insertBefore(errorMessage, headerDescription);
   });
 
 })();
