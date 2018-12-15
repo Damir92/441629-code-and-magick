@@ -7,14 +7,11 @@
 
   var userDialog = window.setup.userDialog;
   var setupUserName = window.setup.setupUserName;
-  var changeWizardStyle = window.setup.changeWizardStyle;
   var showValidityMessage = window.setup.showValidityMessage;
   var changeValidityMessage = window.setup.changeValidityMessage;
 
   var setupOpen = document.querySelector('.setup-open');
   var setupClose = userDialog.querySelector('.setup-close');
-
-  var setupPlayer = userDialog.querySelector('.setup-player');
 
   // Функция открытия окна настроек персонажа
   var openSetup = function () {
@@ -30,8 +27,6 @@
 
     setupUserName.addEventListener('focusin', onInputFocus);
     setupUserName.addEventListener('blur', onInputFocusOut);
-
-    changeWizardStyle(setupPlayer);
   };
 
   // Функция закрытия окна настроек персонажа

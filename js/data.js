@@ -1,27 +1,6 @@
 'use strict';
 
 (function () {
-  var WIZARD_NAMES = [
-    'Иван',
-    'Хуан Себастьян',
-    'Мария',
-    'Кристоф',
-    'Виктор',
-    'Юлия',
-    'Люпита',
-    'Вашингтон'
-  ];
-
-  var WIZARD_LAST_NAMES = [
-    'де Марья',
-    'Верон',
-    'Мирабелла',
-    'Вальц',
-    'Онопко',
-    'Топольницкая',
-    'Нионго',
-    'Ирвинг'
-  ];
 
   var COAT_COLORS = [
     'rgb(101, 137, 164)',
@@ -49,8 +28,6 @@
   ];
 
   window.data = {
-    WIZARD_NAMES: WIZARD_NAMES,
-    WIZARD_LAST_NAMES: WIZARD_LAST_NAMES,
     COAT_COLORS: COAT_COLORS,
     EYES_COLORS: EYES_COLORS,
     FIREBALL_COLORS: FIREBALL_COLORS
